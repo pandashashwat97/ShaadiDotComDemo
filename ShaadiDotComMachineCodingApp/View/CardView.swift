@@ -18,15 +18,21 @@ struct CardView: View {
     var body: some View {
         VStack {
             AsyncImage(url: URL(string: imageUrl)){ result in
-                result.image?
-                    .resizable()
-                    .scaledToFit()
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 20)
-                            .stroke(lineWidth: 5)
-                            .foregroundStyle(Color.black)
-                    }
+                if result.image == nil {
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color.black)
+                        .frame(height: emptyImageHeight)
+                } else {
+                    result.image?
+                        .resizable()
+                        .scaledToFit()
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(lineWidth: 5)
+                                .foregroundStyle(Color.black)
+                        }
+                }
             }
             .frame(width: cardWidth)
             UserInfoView(result: result)
@@ -40,5 +46,8 @@ private extension CardView {
     }
     var cardHeight: CGFloat {
         UIScreen.main.bounds.height / 1.5
+    }
+    var emptyImageHeight: CGFloat {
+        UIScreen.main.bounds.height / 2
     }
 }
